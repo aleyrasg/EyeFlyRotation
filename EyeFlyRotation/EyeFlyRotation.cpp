@@ -2,12 +2,14 @@
 //
 
 #include <SFML/Graphics.hpp>
+#include "EyeFly.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Circle with Lines");
+
+    EyeFly eyefly(300.0f, 72, sf::Vector2f(400.0f, 300.0f));
+    const float rotationSpeed = 0.01f;
 
     while (window.isOpen())
     {
@@ -18,13 +20,31 @@ int main()
                 window.close();
         }
 
+        // Handle keyboard input for moving the circle
+        sf::Vector2f movement(0.0f, 0.0f);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            movement.x -= 1.0f;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            movement.x += 1.0f;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            movement.y -= 1.0f;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            movement.y += 1.0f;
+
+        eyefly.move(movement);
+
+        // Update rotation angle
+        eyefly.rotate(rotationSpeed);
+
         window.clear();
-        window.draw(shape);
+        eyefly.draw(window);
         window.display();
     }
 
     return 0;
 }
+
+
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
 // Depurar programa: F5 o menú Depurar > Iniciar depuración
 
